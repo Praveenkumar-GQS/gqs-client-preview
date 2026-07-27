@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GQS550-057_0004_100394-10MY-TS01 | Client Portal</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:Arial,sans-serif;font-size:13px;background:#f0f2f5;color:#222;}
+
+  /* TOP NAV */
+  .topnav{background:#1a3a5c;color:#fff;padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .topnav-brand{display:flex;align-items:center;gap:10px;}
+  .topnav-logo{font-size:20px;font-weight:900;color:#00e5a0;letter-spacing:-1px;}
+  .topnav-divider{width:1px;height:22px;background:#2e6da4;}
+  .topnav-title{font-size:13px;color:#8ab4d4;font-weight:500;}
+  .topnav-right{display:flex;align-items:center;gap:14px;}
+  .topnav-doc{font-size:11px;color:#8ab4d4;}
+  .status-pill{background:#fff3cd;color:#856404;border-radius:12px;padding:3px 11px;font-size:11px;font-weight:700;}
+  .status-pill.submitted{background:#d4edda;color:#155724;}
+  .status-pill.rejected{background:#f8d7da;color:#721c24;}
+
+  /* PAGE */
+  .page{max-width:1800px;margin:0 auto;padding:24px 20px 60px;}
+
+  /* SUMMARY BOX */
+  .summary-box{background:#fff;border:1px solid #d0dcea;border-radius:8px;padding:14px 18px;margin-bottom:18px;}
+  .summary-box-title{font-size:12px;font-weight:700;color:#1a3a5c;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+  .summary-bullets{display:flex;flex-direction:column;gap:4px;}
+  .summary-bullet{font-size:12px;color:#444;display:flex;align-items:center;gap:6px;}
+  .bullet-dot{width:7px;height:7px;background:#1a3a5c;border-radius:50%;flex-shrink:0;}
+
+  /* TIMESHEET CARD */
+  .ts-card{background:#fff;border:1px solid #d0dcea;border-radius:8px;overflow:hidden;margin-bottom:18px;}
+  .ts-card-header{background:#1a3a5c;color:#fff;padding:10px 14px;font-size:13px;font-weight:700;text-align:center;}
+
+  /* META TABLE */
+  .meta-table{width:100%;border-collapse:collapse;}
+  .meta-table td{border:1px solid #d0dcea;padding:7px 10px;font-size:12px;}
+  .meta-table .meta-label{font-weight:700;background:#eaf0f8;width:14%;white-space:nowrap;}
+  .meta-table .meta-value{width:19%;}
+
+  /* SECTION HEADER */
+  .section-header{background:#1a3a5c;color:#fff;padding:6px 12px;font-size:12px;font-weight:700;text-align:center;}
+
+  /* DATA TABLE */
+  .data-table{width:100%;border-collapse:collapse;font-size:10px;table-layout:auto;}
+  .data-table thead th{background:#2d5a8a;color:#fff;padding:5px 6px;text-align:center;border:1px solid #1a3a5c;white-space:nowrap;font-size:9px;}
+  .data-table thead th.left{text-align:left;}
+  .data-table tbody tr:nth-child(even){background:#f4f7fb;}
+  .data-table tbody tr:hover{background:#eaf0f8;}
+  .data-table tbody td{border:1px solid #d0dcea;padding:4px 6px;color:#333;}
+  .data-table tbody td.center{text-align:center;}
+  .data-table tfoot td{background:#1a3a5c;color:#fff;font-weight:700;padding:6px 8px;border:1px solid #0f2a45;font-size:11px;text-align:center;}
+  .data-table tfoot td.left{text-align:left;}
+  .status-ok{color:#155724;font-size:10px;}
+
+  /* TOTALS ROW */
+  .totals-bar{display:flex;gap:0;border:1px solid #d0dcea;border-radius:0 0 8px 8px;overflow:hidden;}
+  .total-cell{flex:1;text-align:center;padding:8px 6px;border-right:1px solid #d0dcea;background:#f4f7fb;}
+  .total-cell:last-child{border-right:none;}
+  .total-cell .tc-label{font-size:10px;color:#888;margin-bottom:2px;}
+  .total-cell .tc-value{font-size:15px;font-weight:700;color:#1a3a5c;}
+
+  /* APPROVAL SECTION */
+  .approval-card{background:#fff;border:1px solid #d0dcea;border-radius:8px;overflow:hidden;margin-bottom:18px;}
+
+  /* NEW APPROVALS PANEL */
+  .approvals-wrap{background:#fff;border:1px solid #d0dcea;border-radius:10px;overflow:hidden;margin-bottom:18px;}
+  .approvals-header{background:#1a3a5c;color:#fff;padding:14px 20px;font-size:15px;font-weight:700;display:flex;align-items:center;gap:10px;}
+  .approvals-grid{display:grid;grid-template-columns:1fr 1fr;}
+  .approval-col{padding:22px 24px;}
+  .approval-col.gqs{border-right:1px solid #eef1f5;background:#fafffb;}
+  .approval-col-title{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;padding-bottom:10px;border-bottom:2px solid;margin-bottom:16px;}
+  .approval-col-title.green{color:#1b5e20;border-color:#1b5e20;}
+  .approval-col-title.blue{color:#1a3a5c;border-color:#1a3a5c;}
+  .approval-row{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+  .icon-badge{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .icon-badge.green{background:#e8f5e9;color:#1b5e20;}
+  .icon-badge.blue{background:#e3f2fd;color:#1565c0;}
+  .approval-row-label{font-size:11px;font-weight:700;color:#555;margin-bottom:2px;}
+  .approval-row-value{font-size:13px;color:#222;}
+  .gqs-sig-display{border:1.5px dashed #a5d6a7;border-radius:8px;background:#f4faf5;min-height:90px;display:flex;align-items:center;justify-content:center;padding:10px;margin-top:4px;}
+  .approved-badge-v2{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#1b5e20;margin-top:6px;}
+  .approved-badge-v2 .check-circle{width:22px;height:22px;border-radius:50%;background:#1b5e20;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+  .approval-header{background:#1a3a5c;color:#fff;padding:10px 14px;font-size:13px;font-weight:700;text-align:center;}
+  .approval-body{padding:20px 24px;}
+  .approval-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:20px;}
+  .approval-field label{display:block;font-size:11px;font-weight:700;color:#555;margin-bottom:5px;}
+  .approval-field input,.approval-field textarea{width:100%;border:1px solid #c5d3e0;border-radius:4px;padding:8px 10px;font-size:12px;color:#222;outline:none;transition:border-color 0.15s;}
+  .approval-field input:focus,.approval-field textarea:focus{border-color:#1a3a5c;box-shadow:0 0 0 2px rgba(26,58,92,0.1);}
+  .approval-field textarea{resize:vertical;min-height:60px;}
+  .form-row{margin-bottom:14px;}
+  .form-row label{display:block;font-size:11px;font-weight:700;color:#555;margin-bottom:5px;}
+  .form-row input,.form-row textarea{width:100%;border:1px solid #c5d3e0;border-radius:4px;padding:8px 10px;font-size:12px;color:#222;outline:none;transition:border-color 0.15s;}
+  .form-row input:focus,.form-row textarea:focus{border-color:#1a3a5c;box-shadow:0 0 0 2px rgba(26,58,92,0.1);}
+  .form-row textarea{resize:vertical;min-height:60px;}
+
+  /* SIGNATURE BOX */
+  .sig-box{border:2px dashed #c5d3e0;border-radius:6px;background:#f8faff;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100px;cursor:pointer;position:relative;overflow:hidden;transition:border-color 0.2s,background 0.2s;}
+  .sig-box:hover{border-color:#1a3a5c;background:#eaf0f8;}
+  .sig-box input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+  .sig-box .sig-icon{font-size:28px;color:#aaa;margin-bottom:5px;}
+  .sig-box .sig-text{font-size:12px;color:#1a3a5c;font-weight:600;}
+  .sig-box .sig-sub{font-size:10px;color:#aaa;margin-top:2px;}
+  .sig-preview{width:100%;height:100%;object-fit:contain;display:none;border-radius:4px;}
+  .sig-clear{position:absolute;top:5px;right:7px;background:#c0392b;color:#fff;border:none;border-radius:3px;padding:2px 7px;font-size:10px;cursor:pointer;display:none;}
+
+  /* SUBMIT BUTTON */
+  .submit-row{display:flex;justify-content:center;gap:12px;padding:8px 0 4px;}
+  .btn-submit{background:#1a3a5c;color:#fff;border:none;border-radius:5px;padding:12px 44px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background 0.15s;}
+  .btn-submit:hover{background:#142e4a;}
+  .btn-submit:active{transform:scale(0.98);}
+  .btn-submit:disabled{background:#aaa;cursor:not-allowed;}
+  .btn-reject{background:#fff;color:#c0392b;border:1.5px solid #c0392b;border-radius:5px;padding:12px 34px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background 0.15s,color 0.15s;}
+  .btn-reject:hover{background:#c0392b;color:#fff;}
+  .btn-reject:active{transform:scale(0.98);}
+  .btn-reject:disabled{background:#eee;color:#aaa;border-color:#ccc;cursor:not-allowed;}
+
+  /* SUCCESS SCREEN */
+  .success-screen{display:none;background:#fff;border:1px solid #a5d6a7;border-radius:8px;padding:40px 24px;text-align:center;margin-bottom:18px;}
+  .success-screen.rejected{border-color:#e6a5a5;}
+  .success-screen.show{display:block;}
+  .success-icon{font-size:52px;margin-bottom:12px;}
+  .success-title{font-size:20px;font-weight:700;color:#1a3a5c;margin-bottom:6px;}
+  .success-sub{font-size:13px;color:#555;margin-bottom:18px;}
+  .success-meta{display:inline-block;background:#f4f7fb;border:1px solid #d0dcea;border-radius:6px;padding:10px 24px;font-size:12px;color:#444;text-align:left;}
+  .success-meta div{margin-bottom:4px;}
+  .success-meta strong{color:#1a3a5c;}
+
+  /* FOOTER */
+  .portal-footer{text-align:center;font-size:11px;color:#aaa;margin-top:12px;}
+
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px;}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="topnav">
+  <div class="topnav-brand">
+    <span class="topnav-logo">GQS &#10003;</span>
+    <div class="topnav-divider"></div>
+    <span class="topnav-title">Client Approval Portal</span>
+  </div>
+  <div class="topnav-right">
+    <span class="topnav-doc" id="navDocName">GQS550-057_0004_100394-10MY-TS01.pdf</span>
+    <span class="status-pill" id="statusPill">Pending Approval</span>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="page" id="mainPage">
+
+  <!-- SUMMARY BOX -->
+  <div class="summary-box">
+    <div class="summary-box-title" id="summaryTitle">&#9679; Actual data from report selection</div>
+    <div class="summary-bullets">
+      <div class="summary-bullet"><span class="bullet-dot"></span>Total visits: <strong id="sumTotalVisits">12</strong></div>
+      <div class="summary-bullet"><span class="bullet-dot"></span>Visit period: <strong id="sumVisitPeriod">02-Jun-2026 to 30-Jun-2026</strong></div>
+      <div class="summary-bullet"><span class="bullet-dot"></span>Supplier: Nanjing Develop Advanced Manufacturing Co., Ltd.</div>
+    </div>
+  </div>
+
+  <!-- TIMESHEET CARD -->
+  <div class="ts-card">
+    <div class="ts-card-header" id="tsCardHeader">WBS-wise 10-Day Consolidated Timesheet</div>
+
+    <!-- META -->
+    <table class="meta-table">
+      <tr>
+        <td class="meta-label">Client:</td>
+        <td class="meta-value">One Subsea Malaysia Systems Sdn Bhd.</td>
+        <td class="meta-label">Month:</td>
+        <td class="meta-value">June 2026</td>
+        <td class="meta-label">Client Contact:</td>
+        <td>Nor Azila Kamarudin</td>
+      </tr>
+      <tr>
+        <td class="meta-label">Submission Period:</td>
+        <td>01-Jun-2026 to 30-Jun-2026</td>
+        <td class="meta-label">WBS Number:</td>
+        <td>100394-10MY</td>
+        <td class="meta-label">Global Contact:</td>
+        <td>Darmeswara Radha Krishna</td>
+      </tr>
+      <tr>
+        <td class="meta-label">Submitted By:</td>
+        <td>GQS</td>
+        <td class="meta-label">Total Visits:</td>
+        <td id="metaTotalVisits">12</td>
+        <td class="meta-label">CTR Number:</td>
+        <td>CTR-100394-01</td>
+      </tr>
+    </table>
+
+    <!-- VISIT DETAILS -->
+    <div class="section-header">Visit Details</div>
+    <div style="overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Sl. No.</th>
+            <th class="left">NOI Number</th>
+            <th>Visit Start</th>
+            <th>Visit End</th>
+            <th class="left">Inspector</th>
+            <th class="left">Vendor / Supplier</th>
+            <th class="left">GQS / Visit Number</th>
+            <th class="left">PO Number</th>
+            <th class="left">Cost Code</th>
+            <th class="left">QS Plan ID</th>
+            <th>Work Time</th>
+            <th>Travel Time</th>
+            <th>Report Time</th>
+            <th>OT Time</th>
+            <th>Total Hours</th>
+            <th>Mileage</th>
+            <th class="left">Notes</th>
+          </tr>
+        </thead>
+        <tbody id="visitTableBody"></tbody>
+        <tfoot>
+          <tr>
+            <td colspan="10" class="left" id="tfootSummary">Total Visits: 12 &nbsp;&nbsp;&nbsp; Total Mileage: 2000 km &nbsp;&nbsp;&nbsp; Prepared for consolidated client approval</td>
+            <td id="tfWork">112</td>
+            <td id="tfTravel">26</td>
+            <td id="tfReport">14</td>
+            <td id="tfOT">0</td>
+            <td id="tfHours">152</td>
+            <td id="tfMileage">2000</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- TOTALS BAR -->
+    <div class="totals-bar">
+      <div class="total-cell"><div class="tc-label">Total Visits</div><div class="tc-value" id="barVisits">12</div></div>
+      <div class="total-cell"><div class="tc-label">Total Hours</div><div class="tc-value" id="barHours">152</div></div>
+      <div class="total-cell"><div class="tc-label">Work Time</div><div class="tc-value" id="barWork">112</div></div>
+      <div class="total-cell"><div class="tc-label">Travel Time</div><div class="tc-value" id="barTravel">26</div></div>
+      <div class="total-cell"><div class="tc-label">Report Time</div><div class="tc-value" id="barReport">14</div></div>
+      <div class="total-cell"><div class="tc-label">OT Time</div><div class="tc-value" id="barOT">0</div></div>
+      <div class="total-cell"><div class="tc-label">Total Mileage</div><div class="tc-value" id="barMileage">2000 km</div></div>
+    </div>
+  </div>
+
+  <!-- APPROVALS PANEL -->
+  <div class="approvals-wrap" id="approvalCard">
+    <div class="approvals-header">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+      Approvals
+    </div>
+    <div class="approvals-grid">
+
+      <!-- GQS APPROVAL (left, completed by coordinator at generation time) -->
+      <div class="approval-col gqs">
+        <div class="approval-col-title green">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+          GQS Approval
+        </div>
+
+        <div class="approval-row">
+          <div class="icon-badge green"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div>
+          <div>
+            <div class="approval-row-label">Coordinator</div>
+            <div class="approval-row-value">Praveenkumar Gunasekaran</div>
+          </div>
+        </div>
+
+        <div class="approval-row">
+          <div class="icon-badge green"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+          <div>
+            <div class="approval-row-label">Date Generated</div>
+            <div class="approval-row-value">27 Jul 2026</div>
+          </div>
+        </div>
+
+        <div class="approval-row" style="align-items:flex-start;">
+          <div class="icon-badge green"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div>
+          <div style="flex:1;">
+            <div class="approval-row-label">Signature</div>
+            <div class="gqs-sig-display" id="gqsSigWrap">
+              <img id="gqsSigImg" src="" alt="Coordinator signature" style="max-height:70px;max-width:100%;display:none;"/>
+              <span id="gqsSigFallback" style="font-size:12px;color:#888;">No signature attached</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="approved-badge-v2">
+          <span class="check-circle">&#10003;</span> Approved and generated by GQS
+        </div>
+      </div>
+
+      <!-- CLIENT APPROVAL (right, interactive) -->
+      <div class="approval-col client">
+        <div class="approval-col-title blue">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+          Client Approval
+        </div>
+
+        <div style="display:flex;gap:8px;margin-bottom:14px;">
+          <button type="button" id="methodBtnUpload" onclick="setSignMethod('upload')" style="flex:1;padding:8px 6px;border-radius:5px;border:1.5px solid #1a3a5c;background:#1a3a5c;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">&#128221; Upload Signature</button>
+          <button type="button" id="methodBtnPdf" onclick="setSignMethod('pdf')" style="flex:1;padding:8px 6px;border-radius:5px;border:1.5px solid #c5d3e0;background:#fff;color:#1a3a5c;font-size:11px;font-weight:700;cursor:pointer;">&#128196; Sign PDF Instead</button>
+        </div>
+
+        <!-- OPTION A: Upload signature image -->
+        <div id="methodPanelUpload">
+          <div class="form-row">
+            <label>Signature <span style="color:#c0392b;">*</span></label>
+            <div class="sig-box" id="sigBox">
+              <input type="file" id="sigFile" accept="image/*" onchange="onSigUpload(this)"/>
+              <div class="sig-icon" id="sigIcon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15V3M6 9l6-6 6 6"/><path d="M4 17v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></div>
+              <div class="sig-text" id="sigText">Click to upload signature</div>
+              <div class="sig-sub" id="sigSub">PNG, JPG supported</div>
+              <img id="sigPreview" class="sig-preview" alt="Signature preview"/>
+              <button class="sig-clear" id="sigClear" onclick="clearSig(event)">&#10005; Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- OPTION B: Download PDF, sign externally, upload signed PDF -->
+        <div id="methodPanelPdf" style="display:none;">
+          <div style="background:#f8faff;border:1px solid #dbe8fa;border-radius:6px;padding:10px 12px;margin-bottom:12px;font-size:11px;color:#1a3a5c;line-height:1.6;">
+            <strong>Step 1:</strong> Download the timesheet PDF below.<br/>
+            <strong>Step 2:</strong> Sign it using your PDF reader (e.g. Adobe Fill &amp; Sign, Preview).<br/>
+            <strong>Step 3:</strong> Upload the signed PDF back here.
+          </div>
+          <button type="button" onclick="downloadTimesheetPdf()" style="width:100%;background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7;border-radius:5px;padding:10px;font-size:12px;font-weight:700;cursor:pointer;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:6px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+            Download Timesheet PDF
+          </button>
+          <div class="form-row">
+            <label>Signed PDF <span style="color:#c0392b;">*</span></label>
+            <div class="sig-box" id="pdfBox">
+              <input type="file" id="pdfFile" accept="application/pdf" onchange="onPdfUpload(this)"/>
+              <div class="sig-icon" id="pdfIcon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+              <div class="sig-text" id="pdfText">Click to upload signed PDF</div>
+              <div class="sig-sub" id="pdfSub">PDF only</div>
+              <div id="pdfChosenName" style="display:none;font-size:12px;color:#1b5e20;font-weight:700;text-align:center;padding:0 10px;word-break:break-all;"></div>
+              <button class="sig-clear" id="pdfClear" onclick="clearPdf(event)">&#10005; Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label>Date <span style="color:#c0392b;">*</span></label>
+          <input type="date" id="approvalDate" value=""/>
+        </div>
+
+        <div class="form-row">
+          <label>Comments <span style="font-weight:400;color:#888;">(Optional)</span></label>
+          <textarea id="approvalComments" placeholder="Optional remarks or notes..."></textarea>
+        </div>
+
+        <div class="submit-row" style="justify-content:flex-start;">
+          <button class="btn-reject" id="btnReject" onclick="doReject()">
+            &#10007; Reject Approval
+          </button>
+          <button class="btn-submit" id="btnSubmit" onclick="doSubmit()">
+            &#10003; Submit Approval
+          </button>
+        </div>
+        <div style="font-size:11px;color:#aaa;margin-top:8px;display:flex;align-items:center;gap:5px;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+          By submitting, you confirm the timesheet details are correct and approved.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SUCCESS SCREEN (hidden until submit) -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon" id="doneIcon">&#9989;</div>
+    <div class="success-title" id="doneTitle">Timesheet Approved!</div>
+    <div class="success-sub" id="doneSub">Your approval has been submitted successfully. The GQS coordinator has been notified.</div>
+    <div class="success-meta">
+      <div><strong>Document:</strong> <span id="doneDocName">GQS550-057_0004_100394-10MY-TS01</span>.pdf</div>
+      <div id="doneApprovedByRow"><strong>Approved by:</strong> <span id="doneApprovedBy"></span></div>
+      <div><strong>Date:</strong> <span id="doneDate"></span></div>
+      <div><strong>Submitted at:</strong> <span id="doneTime"></span></div>
+      <div id="doneCommentsRow" style="display:none;"><strong>Comments:</strong> <span id="doneComments"></span></div>
+    </div>
+  </div>
+
+  <div class="portal-footer">
+    GQS Client Portal &nbsp;&#8226;&nbsp; This link is valid for 30 days &nbsp;&#8226;&nbsp; Confidential
+  </div>
+
+</div>
+
+<script>
+const ROWS = [{"noi": "153784 (03)", "inspector": "Shang Jianqi", "start": "30/06/2026", "end": "30/06/2026", "wt": 8, "tt": 2, "rt": 1, "ot": 0, "mileage": 100, "visit": "GQS550-057/0004/0016", "po": "PO-45000016", "cc": "CC-0016", "qs": "QSP-2026-016", "notes": "All timesheet entries verified"}, {"noi": "153780 (01)", "inspector": "Zhixiang Jiang", "start": "26/06/2026", "end": "26/06/2026", "wt": 8, "tt": 2, "rt": 1, "ot": 0, "mileage": 100, "visit": "GQS550-057/0004/0015", "po": "PO-45000015", "cc": "CC-0015", "qs": "QSP-2026-015", "notes": ""}, {"noi": "153779 (01)", "inspector": "Handong Li", "start": "25/06/2026", "end": "26/06/2026", "wt": 16, "tt": 3, "rt": 2, "ot": 0, "mileage": 200, "visit": "GQS550-057/0004/0013", "po": "PO-45000013", "cc": "CC-0013", "qs": "QSP-2026-013", "notes": "Extended visit - 2 days"}, {"noi": "152978 (01)", "inspector": "Handong Li", "start": "13/06/2026", "end": "13/06/2026", "wt": 8, "tt": 2, "rt": 1, "ot": 0, "mileage": 100, "visit": "GQS550-057/0004/0010", "po": "PO-45000010", "cc": "CC-0010", "qs": "QSP-2026-010", "notes": ""}, {"noi": "153027 (01)", "inspector": "Barry Li", "start": "12/06/2026", "end": "13/06/2026", "wt": 16, "tt": 3, "rt": 2, "ot": 0, "mileage": 200, "visit": "GQS550-057/0004/0011", "po": "PO-45000011", "cc": "CC-0011", "qs": "QSP-2026-011", "notes": "Extended visit - 2 days"}, {"noi": "152981 (01)", "inspector": "Zhixiang Jiang", "start": "12/06/2026", "end": "12/06/2026", "wt": 8, "tt": 2, "rt": 1, "ot": 0, "mileage": 100, "visit": "GQS550-057/0004/0012", "po": "PO-45000012", "cc": "CC-0012", "qs": "QSP-2026-012", "notes": ""}, {"noi": "153026 (01)", "inspector": "Handong Li", "start": "11/06/2026", "end": "11/06/2026", "wt": 8, "tt": 2, "rt": 1, "ot": 0, "mileage": 100, "visit": "GQS550-057/0004/0009", "po": "PO-45000009", "cc": "CC-0009", "qs": "QSP-2026-009", "notes": ""}, {"noi": "152968 (01)", "inspector": "Liu Simon", "start": "10/06/2026", "end": "12/06/2026", "wt": 24, "tt": 4, "rt": 3, "ot": 0, "mileage": 300, "visit": "GQS550-057/0004/0007", "po": "PO-45000007", "cc": "CC-0007", "qs": "QSP-2026-007", "notes": "Multi-day inspection"}];
+const VENDOR="Nanjing Develop Advanced Manufacturing Co., Ltd.";
+
+function renderTable(){
+  const tbody=document.getElementById('visitTableBody');
+  tbody.innerHTML='';
+  ROWS.forEach((r,i)=>{
+    const tot=r.wt+r.tt+r.rt+r.ot;
+    const tr=document.createElement('tr');
+    tr.innerHTML=
+      '<td class="center">'+(i+1)+'</td>'+
+      '<td>'+r.noi+'</td>'+
+      '<td class="center">'+r.start+'</td>'+
+      '<td class="center">'+r.end+'</td>'+
+      '<td>'+r.inspector+'</td>'+
+      '<td style="font-size:10px;">'+VENDOR+'</td>'+
+      '<td>'+r.visit+'</td>'+
+      '<td style="font-size:10px;">'+r.po+'</td>'+
+      '<td style="font-size:10px;">'+r.cc+'</td>'+
+      '<td style="font-size:10px;">'+r.qs+'</td>'+
+      '<td class="center">'+r.wt+'</td>'+
+      '<td class="center">'+r.tt+'</td>'+
+      '<td class="center">'+r.rt+'</td>'+
+      '<td class="center">'+r.ot+'</td>'+
+      '<td class="center" style="font-weight:700;">'+tot+'</td>'+
+      '<td class="center">'+r.mileage+'</td>'+
+      '<td style="font-size:10px;color:#666;">'+(r.notes||'')+'</td>';
+    tbody.appendChild(tr);
+  });
+}
+
+let sigUploaded = false;
+let pdfUploaded = false;
+let currentSignMethod = 'upload';
+
+function setSignMethod(method){
+  currentSignMethod=method;
+  const btnUpload=document.getElementById('methodBtnUpload');
+  const btnPdf=document.getElementById('methodBtnPdf');
+  const panelUpload=document.getElementById('methodPanelUpload');
+  const panelPdf=document.getElementById('methodPanelPdf');
+  if(method==='upload'){
+    btnUpload.style.background='#1a3a5c';btnUpload.style.color='#fff';btnUpload.style.borderColor='#1a3a5c';
+    btnPdf.style.background='#fff';btnPdf.style.color='#1a3a5c';btnPdf.style.borderColor='#c5d3e0';
+    panelUpload.style.display='block';panelPdf.style.display='none';
+  } else {
+    btnPdf.style.background='#1a3a5c';btnPdf.style.color='#fff';btnPdf.style.borderColor='#1a3a5c';
+    btnUpload.style.background='#fff';btnUpload.style.color='#1a3a5c';btnUpload.style.borderColor='#c5d3e0';
+    panelPdf.style.display='block';panelUpload.style.display='none';
+  }
+}
+
+function downloadTimesheetPdf(){
+  let rowsHTML='';
+  ROWS.forEach((r,i)=>{
+    const tot=r.wt+r.tt+r.rt+r.ot;
+    rowsHTML+='<tr style="background:'+(i%2===0?'#fff':'#f4faf6')+'">'+
+      '<td style="border:1px solid #c0d8c8;padding:4px 6px;text-align:center;">'+(i+1)+'</td>'+
+      '<td style="border:1px solid #c0d8c8;padding:4px 6px;">'+r.noi+'</td>'+
+      '<td style="border:1px solid #c0d8c8;padding:4px 6px;">'+r.start+'</td>'+
+      '<td style="border:1px solid #c0d8c8;padding:4px 6px;">'+r.end+'</td>'+
+      '<td style="border:1px solid #c0d8c8;padding:4px 6px;">'+r.inspector+'</td>'+
+      '<td style="border:1px solid #c0d8c8;padding:4px 6px;">'+r.visit+'</td>'+
+      '<td style="border:1px solid #c0d8c8;padding:4px 6px;text-align:center;">'+tot+'</td>'+
+      '<td style="border:1px solid #c0d8c8;padding:4px 6px;text-align:center;">'+r.mileage+'</td>'+
+    '</tr>';
+  });
+  const docName=document.getElementById('navDocName').textContent.replace('.pdf','');
+  const html='<!DOCTYPE html><html><head><title>'+docName+'</title>'+
+    '<style>@page{size:A4 landscape;margin:12mm;}body{font-family:Arial,sans-serif;font-size:12px;color:#222;margin:0;}'+
+    '@media print{.no-print{display:none!important;}}</style></head><body>'+
+    '<div class="no-print" style="background:#2d2d2d;padding:10px 20px;">'+
+      '<button onclick="window.print()" style="background:#28a745;color:#fff;border:none;padding:8px 20px;border-radius:4px;font-size:13px;font-weight:bold;cursor:pointer;">Print / Save as PDF</button>'+
+      '<span style="color:#aaa;font-size:11px;margin-left:12px;">Save this PDF, sign it, then upload it back on the portal.</span>'+
+    '</div>'+
+    '<div style="padding:20px;">'+
+      '<div style="font-size:20px;font-weight:900;color:#1a6b3c;margin-bottom:4px;">GQS &#10003;</div>'+
+      '<h2 style="color:#1a3a5c;">'+docName+'</h2>'+
+      '<table style="width:100%;border-collapse:collapse;font-size:11px;margin-top:14px;">'+
+        '<thead><tr style="background:#2d8a5a;color:#fff;">'+
+          '<th style="border:1px solid #b0ccb8;padding:5px;">Sl.No</th>'+
+          '<th style="border:1px solid #b0ccb8;padding:5px;">NOI</th>'+
+          '<th style="border:1px solid #b0ccb8;padding:5px;">Start</th>'+
+          '<th style="border:1px solid #b0ccb8;padding:5px;">End</th>'+
+          '<th style="border:1px solid #b0ccb8;padding:5px;">Inspector</th>'+
+          '<th style="border:1px solid #b0ccb8;padding:5px;">Visit Number</th>'+
+          '<th style="border:1px solid #b0ccb8;padding:5px;">Hours</th>'+
+          '<th style="border:1px solid #b0ccb8;padding:5px;">Mileage</th>'+
+        '</tr></thead>'+
+        '<tbody>'+rowsHTML+'</tbody>'+
+      '</table>'+
+      '<div style="margin-top:40px;display:flex;gap:60px;">'+
+        '<div style="flex:1;"><div style="border-bottom:1px solid #999;height:30px;"></div><div style="font-size:11px;color:#555;margin-top:4px;">Client Signature</div></div>'+
+        '<div style="flex:1;"><div style="border-bottom:1px solid #999;height:30px;"></div><div style="font-size:11px;color:#555;margin-top:4px;">Date</div></div>'+
+      '</div>'+
+    '</div>'+
+  '</body></html>';
+  const blob=new Blob([html],{type:'text/html'});
+  const url=URL.createObjectURL(blob);
+  window.open(url,'_blank');
+}
+
+function onPdfUpload(input){
+  if(!input.files||!input.files[0]) return;
+  const file=input.files[0];
+  if(file.type!=='application/pdf'){ alert('Please upload a PDF file.'); return; }
+  document.getElementById('pdfChosenName').textContent=file.name;
+  document.getElementById('pdfChosenName').style.display='block';
+  document.getElementById('pdfIcon').style.display='none';
+  document.getElementById('pdfText').style.display='none';
+  document.getElementById('pdfSub').style.display='none';
+  document.getElementById('pdfClear').style.display='block';
+  document.getElementById('pdfBox').style.borderColor='#1a3a5c';
+  document.getElementById('pdfBox').style.background='#fff';
+  pdfUploaded=true;
+}
+
+function clearPdf(e){
+  e.preventDefault();e.stopPropagation();
+  document.getElementById('pdfFile').value='';
+  document.getElementById('pdfChosenName').style.display='none';
+  document.getElementById('pdfChosenName').textContent='';
+  document.getElementById('pdfIcon').style.display='';
+  document.getElementById('pdfText').style.display='';
+  document.getElementById('pdfSub').style.display='';
+  document.getElementById('pdfClear').style.display='none';
+  document.getElementById('pdfBox').style.borderColor='';
+  document.getElementById('pdfBox').style.background='';
+  pdfUploaded=false;
+}
+
+function onSigUpload(input){
+  if(!input.files||!input.files[0]) return;
+  const file=input.files[0];
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const preview=document.getElementById('sigPreview');
+    preview.src=e.target.result;
+    preview.style.display='block';
+    document.getElementById('sigIcon').style.display='none';
+    document.getElementById('sigText').style.display='none';
+    document.getElementById('sigSub').style.display='none';
+    document.getElementById('sigClear').style.display='block';
+    document.getElementById('sigBox').style.borderColor='#1a3a5c';
+    document.getElementById('sigBox').style.background='#fff';
+    sigUploaded=true;
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearSig(e){
+  e.preventDefault();e.stopPropagation();
+  document.getElementById('sigFile').value='';
+  document.getElementById('sigPreview').style.display='none';
+  document.getElementById('sigPreview').src='';
+  document.getElementById('sigIcon').style.display='';
+  document.getElementById('sigText').style.display='';
+  document.getElementById('sigSub').style.display='';
+  document.getElementById('sigClear').style.display='none';
+  document.getElementById('sigBox').style.borderColor='';
+  document.getElementById('sigBox').style.background='';
+  sigUploaded=false;
+}
+
+function doSubmit(){
+  const date=document.getElementById('approvalDate').value;
+  const comments=document.getElementById('approvalComments').value;
+  if(currentSignMethod==='upload' && !sigUploaded){ alert('Please upload your signature before submitting.'); return; }
+  if(currentSignMethod==='pdf' && !pdfUploaded){ alert('Please upload the signed PDF before submitting.'); return; }
+  if(!date){ alert('Please select an approval date.'); return; }
+
+  const btn=document.getElementById('btnSubmit');
+  const rejBtn=document.getElementById('btnReject');
+  btn.disabled=true;
+  rejBtn.disabled=true;
+  btn.innerHTML='&#8987; Submitting...';
+
+  setTimeout(()=>{
+    document.getElementById('approvalCard').style.display='none';
+    const ss=document.getElementById('successScreen');
+    ss.classList.remove('rejected');
+    ss.classList.add('show');
+    document.getElementById('doneIcon').innerHTML='&#9989;';
+    document.getElementById('doneTitle').textContent='Timesheet Approved!';
+    document.getElementById('doneSub').textContent='Your approval has been submitted successfully. The GQS coordinator has been notified.';
+    document.getElementById('doneApprovedByRow').style.display='';
+    document.getElementById('doneApprovedBy').textContent='Client Representative';
+    document.getElementById('doneDate').textContent=date;
+    document.getElementById('doneTime').textContent=new Date().toLocaleString('en-GB');
+    if(comments){
+      document.getElementById('doneCommentsRow').style.display='';
+      document.getElementById('doneComments').textContent=comments;
+    }
+    const pill=document.getElementById('statusPill');
+    pill.textContent='Approved';
+    pill.classList.remove('rejected');
+    pill.classList.add('submitted');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }, 1400);
+}
+
+function doReject(){
+  const date=document.getElementById('approvalDate').value;
+  const comments=document.getElementById('approvalComments').value;
+  if(!date){ alert('Please select a date.'); return; }
+  if(!comments){ alert('Please provide a reason for rejection in Comments.'); return; }
+  if(!confirm('Are you sure you want to reject this timesheet?')) return;
+
+  const btn=document.getElementById('btnSubmit');
+  const rejBtn=document.getElementById('btnReject');
+  btn.disabled=true;
+  rejBtn.disabled=true;
+  rejBtn.innerHTML='&#8987; Rejecting...';
+
+  setTimeout(()=>{
+    document.getElementById('approvalCard').style.display='none';
+    const ss=document.getElementById('successScreen');
+    ss.classList.add('show');
+    ss.classList.add('rejected');
+    document.getElementById('doneIcon').innerHTML='&#10060;';
+    document.getElementById('doneTitle').textContent='Timesheet Rejected';
+    document.getElementById('doneSub').textContent='Your rejection has been submitted. The GQS coordinator has been notified and will follow up.';
+    document.getElementById('doneApprovedByRow').style.display='none';
+    document.getElementById('doneDate').textContent=date;
+    document.getElementById('doneTime').textContent=new Date().toLocaleString('en-GB');
+    document.getElementById('doneCommentsRow').style.display='';
+    document.getElementById('doneComments').textContent=comments;
+    const pill=document.getElementById('statusPill');
+    pill.textContent='Rejected';
+    pill.classList.remove('submitted');
+    pill.classList.add('rejected');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }, 1400);
+}
+
+// Set today's date as default
+document.getElementById('approvalDate').value=new Date().toISOString().split('T')[0];
+
+renderTable();
+
+function fmtDDMMYYYYtoLabel(d){
+  if(!d) return '';
+  var parts=d.split('/');
+  var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return parts[0]+'-'+months[parseInt(parts[1],10)-1]+'-'+parts[2];
+}
+
+(function computeTotals(){
+  if(!ROWS || !ROWS.length) return;
+  var tV=ROWS.length;
+  var tW=0,tT=0,tR=0,tO=0,tM=0;
+  ROWS.forEach(function(r){tW+=r.wt;tT+=r.tt;tR+=r.rt;tO+=r.ot;tM+=r.mileage;});
+  var tH=tW+tT+tR+tO;
+  var minDate=ROWS[ROWS.length-1].start;
+  var maxDate=ROWS[0].end;
+  var periodLabel=fmtDDMMYYYYtoLabel(minDate)+' to '+fmtDDMMYYYYtoLabel(maxDate);
+
+  document.getElementById('sumTotalVisits').textContent=tV;
+  document.getElementById('sumVisitPeriod').textContent=periodLabel;
+  document.getElementById('metaTotalVisits').textContent=tV;
+  document.getElementById('tfootSummary').innerHTML='Total Visits: '+tV+' &nbsp;&nbsp;&nbsp; Total Mileage: '+tM+' km &nbsp;&nbsp;&nbsp; Prepared for consolidated client approval';
+  document.getElementById('tfWork').textContent=tW;
+  document.getElementById('tfTravel').textContent=tT;
+  document.getElementById('tfReport').textContent=tR;
+  document.getElementById('tfOT').textContent=tO;
+  document.getElementById('tfHours').textContent=tH;
+  document.getElementById('tfMileage').textContent=tM;
+  document.getElementById('barVisits').textContent=tV;
+  document.getElementById('barHours').textContent=tH;
+  document.getElementById('barWork').textContent=tW;
+  document.getElementById('barTravel').textContent=tT;
+  document.getElementById('barReport').textContent=tR;
+  document.getElementById('barOT').textContent=tO;
+  document.getElementById('barMileage').textContent=tM+' km';
+})();
+
+// GQS coordinator signature (injected by the portal at generation time, if provided)
+var gqsSigData='';
+if(gqsSigData && gqsSigData.indexOf('data:image') === 0){
+  var gqsImg=document.getElementById('gqsSigImg');
+  var gqsFallback=document.getElementById('gqsSigFallback');
+  gqsImg.src=gqsSigData;
+  gqsImg.style.display='inline-block';
+  gqsFallback.style.display='none';
+}
+</script>
+</body>
+</html>
